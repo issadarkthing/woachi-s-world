@@ -5,7 +5,7 @@ import { Settings } from "../structure/Settings";
 
 export default class extends Command {
   name = "settings";
-  description = "set's server settings";
+  description = "set server's settings";
   permissions = ["ADMINISTRATOR"] as PermissionResolvable[];
 
   private async getChannel(name: string, prompt: Prompt) {
