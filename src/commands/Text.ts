@@ -7,11 +7,19 @@ import { Settings } from "../structure/Settings";
 export default class extends Command {
   name = "text";
   description = "store any custom text";
+  settings!: Settings;
+
+  log(text: string) {
+    this.settings.logChannels.forEach(channel => {
+      channel.send(text);
+    })
+  }
 
   async exec(msg: Message, args: string[]) {
 
     const prompt = new Prompt(msg);
     const settings = Settings.fromGuild(msg.guild!);
+    this.settings = settings;
 
     if (!settings.textChannels.some(x => x.id === msg.channel.id)) {
       const channels = settings.textChannels.join(", ");
@@ -38,5 +46,7 @@ export default class extends Command {
     msg.channel.send("Successfully saved custom text");
     const { prefix } = this.commandManager;
     msg.channel.send(`To see your custom text use \`${prefix}${this.name} show\``);
+
+    this.log(`${player.name} saved custom text "${text}" and has ${player.coins} coins`);
   }
 }
