@@ -9,6 +9,7 @@ import { Prompt } from "@jiman24/discordjs-prompt";
 export default class extends Command {
   name = "play";
   description = "earn money";
+  settings!: Settings;
   roles = [
     { name: "General Base", min: 3, max: 5, },
     { name: "Common Male", min: 10, max: 15, },
@@ -22,10 +23,17 @@ export default class extends Command {
     { name: "Rare Building", min: 140, max: 160, },
   ];
 
+  log(text: string) {
+    this.settings.logChannels.forEach(channel => {
+      channel.send(text);
+    })
+  }
+
   async exec(msg: Message) {
 
     const prompt = new Prompt(msg);
     const settings = Settings.fromGuild(msg.guild!);
+    this.settings = settings;
 
     if (!settings.playChannels.some(x => x.id === msg.channel.id)) {
       const channels = settings.playChannels.join(", ");
@@ -67,11 +75,13 @@ export default class extends Command {
       player.playCommandUses = 0;
       player.coins -= playCommandPay;
       msg.channel.send(`${playCommandPay} coins have been deducted`);
+      this.log(`${playCommandPay} coins have been deducted from ${player.name}`);
     }
 
     player.coins += amount;
     player.save();
 
     msg.channel.send(`You've earned ${amount} coins`);
+    this.log(`${player.name} has earned ${amount} coins`);
   }
 }
