@@ -5,6 +5,7 @@ import { client } from "../index";
 export class Player {
   user: User;
   coins = 0;
+  playCommandUses = 0;
 
   constructor(user: User) {
     this.user = user;
