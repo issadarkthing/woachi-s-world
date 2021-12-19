@@ -1,7 +1,8 @@
 {
   "scripts": {
     "dev": "nodemon dist/index.js",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "build": "tsc"
   },
   "dependencies": {
     "@jiman24/commandment": "^0.4.0",
