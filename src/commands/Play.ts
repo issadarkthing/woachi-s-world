@@ -40,7 +40,7 @@ export default class extends Command {
       .find(x => msg.member?.roles.cache.find(role => role.name === x.name));
 
     if (!role) {
-      throw new Error("You don't have a valid role");
+      throw new Error("You do not have any objects in the collection");
     }
 
     const {min, max} = role;
