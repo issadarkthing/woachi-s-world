@@ -6,6 +6,7 @@ export class Player {
   user: User;
   coins = 0;
   playCommandUses = 0;
+  customText = "";
 
   constructor(user: User) {
     this.user = user;

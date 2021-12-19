@@ -1,7 +1,7 @@
 import { Command } from "@jiman24/commandment";
 import { Message, MessageEmbed } from "discord.js";
 import { Player } from "../structure/Player";
-
+import { Settings } from "../structure/Settings";
 
 export default class extends Command {
   name = "balance";
@@ -20,6 +20,16 @@ export default class extends Command {
   ];
 
   async exec(msg: Message) {
+
+    const settings = Settings.fromGuild(msg.guild!);
+
+    if (!settings.balanceChannels.some(x => x.id === msg.channel.id)) {
+      const channels = settings.balanceChannels.join(", ");
+
+      throw new Error(
+        `this command only works in this channel(s) ${channels}`
+      );
+    }
 
     const player = Player.fromUser(msg.author);
     const role = this.roles
