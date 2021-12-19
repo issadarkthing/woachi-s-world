@@ -80,15 +80,17 @@ export class Settings {
   save() {
 
     const guildID = this.guild.id;
-    const spamChannels = this.playChannels.map(x => x.id);
-    const gamblingChannels = this.textChannels.map(x => x.id);
-    const duelChannels = this.balanceChannels.map(x => x.id);
+    const playChannels = this.playChannels.map(x => x.id);
+    const textChannels = this.textChannels.map(x => x.id);
+    const balanceChannels = this.balanceChannels.map(x => x.id);
+    const logChannels = this.logChannels.map(x => x.id);
 
     client.settings.set(this.guild.id, {
       guildID,
-      spamChannels,
-      gamblingChannels,
-      duelChannels,
+      playChannels,
+      textChannels,
+      balanceChannels,
+      logChannels,
     });
   }
 }
