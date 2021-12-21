@@ -10,6 +10,7 @@ export default class extends Command {
   name = "play";
   description = "earn money";
   settings!: Settings;
+  throttle = 1000 * 60 * 60 * 2; // 2 hours
   roles = [
     { name: "General Base", min: 3, max: 5, },
     { name: "Common Male", min: 10, max: 15, },
