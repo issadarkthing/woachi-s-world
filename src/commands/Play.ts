@@ -44,15 +44,25 @@ export default class extends Command {
     }
 
     const player = Player.fromUser(msg.author);
-    const role = this.roles
-      .find(x => msg.member?.roles.cache.find(role => role.name === x.name));
+    const roles = this.roles
+      .filter(x => msg.member?.roles.cache.find(role => role.name === x.name));
 
-    if (!role) {
+    if (roles.length === 0) {
       throw new Error("You do not have any objects in the collection");
     }
 
-    const {min, max} = role;
-    const amount = random.integer(min, max);
+    const rewardMessage = [] as string[];
+    let totalAmount = 0;
+
+    for (const role of roles) {
+
+      const {min, max} = role;
+      const amount = random.integer(min, max);
+      const text = `${role.name} (${amount})`;
+
+      rewardMessage.push(text);
+      totalAmount += amount;
+    }
 
     player.playCommandUses++;
 
@@ -78,10 +88,14 @@ export default class extends Command {
       this.log(`${playCommandPay} coins have been deducted from ${player.name}`);
     }
 
-    player.coins += amount;
+    player.coins += totalAmount;
     player.save();
 
-    msg.channel.send(`You've earned ${amount} coins`);
-    this.log(`${player.name} has earned ${amount} coins`);
+    const rewardMessages = rewardMessage.join(" + ");
+    msg.channel.send(
+      `You've earned **${rewardMessages} = ${totalAmount} coins**`
+    );
+
+    this.log(`${player.name} has earned **${rewardMessages} = ${totalAmount} coins**`);
   }
 }
